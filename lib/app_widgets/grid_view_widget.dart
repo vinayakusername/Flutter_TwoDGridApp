@@ -50,7 +50,7 @@ class _GridViewPage1State extends State<GridViewPage1>
               showSearch
               (
                 context: context, 
-                delegate: DataSearch(gridRow: widget.gridRow,gridCol: widget.gridCol,gridAlphabetList:widget.gridAlphabetList)
+                delegate: SearchAlphabet(gridRow: widget.gridRow,gridCol: widget.gridCol,gridAlphabetList:widget.gridAlphabetList)
               );
               }, 
               icon:Icon(Icons.search)

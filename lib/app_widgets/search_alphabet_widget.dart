@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DataSearch extends SearchDelegate<String>
+class SearchAlphabet extends SearchDelegate<String>
 {
   int gridRow,gridCol;
   List<String> gridAlphabetList =[];
-  DataSearch({required this.gridRow,required this.gridCol, required this.gridAlphabetList});
+  SearchAlphabet({required this.gridRow,required this.gridCol, required this.gridAlphabetList});
  
    @override
   List<Widget> buildActions(BuildContext context) 
