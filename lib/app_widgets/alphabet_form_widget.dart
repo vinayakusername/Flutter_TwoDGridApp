@@ -17,6 +17,15 @@ class _AlphabetFormPageState extends State<AlphabetFormPage>
 
   String strAlphabet =''; 
   List<String> alphabetList=[];
+  
+  bool _validate = false;
+
+  @override
+  void dispose() 
+  {
+    strTextEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) 
@@ -52,57 +61,116 @@ class _AlphabetFormPageState extends State<AlphabetFormPage>
                     [
                       Padding
                       (
-                       padding: const EdgeInsets.all(12.0),
+                       padding: const EdgeInsets.fromLTRB(12.0,20.0,12.0,12.0),
                        child: TextField
                        (
-                         decoration: InputDecoration
+                        controller: strTextEditingController,
+                        maxLength:widget.rowC*widget.colC,
+                        textCapitalization:TextCapitalization.characters,
+                        decoration: InputDecoration
                         (
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter Alphabets'
+                          labelStyle:TextStyle(color: Colors.orange),
+                          labelText: 'Alphabets',
+                          hintText: 'Enter alphabets',
+                          hintStyle: TextStyle(color: Colors.blueGrey),
+                          errorText: _validate ? 'Value Can\'t Be Empty' : null,
+                          focusedBorder:OutlineInputBorder
+                          (
+                           borderRadius: BorderRadius.circular(8.0),
+                           borderSide: BorderSide
+                          (
+                            color: Colors.amberAccent,
+                            width: 2
+                          ),
+                          ),
+                          enabledBorder: OutlineInputBorder
+                          (
+                             borderRadius: BorderRadius.circular(8.0),
+                             borderSide: BorderSide
+                             (
+                              color: Colors.blueGrey
+                             )
+                          ),
+                           errorBorder: OutlineInputBorder
+                           (
+                             borderRadius: BorderRadius.circular(8.0),
+                             borderSide: BorderSide
+                                      (
+                                          color: Colors.redAccent,
+                                          width: 2
+                                        )
+                                      ),
+                           focusedErrorBorder: OutlineInputBorder
+                             (
+                               borderRadius: BorderRadius.circular(8.0),
+                               borderSide: BorderSide
+                              (
+                               color:Colors.redAccent,
+                               width: 2
+                             )
+                             ),
                         ),
-                       controller: strTextEditingController,
-                       maxLength:widget.rowC*widget.colC,
-                       textCapitalization:TextCapitalization.characters,
                        ),
                       ),
                      SizedBox(height:10.0),
-                     FlatButton
-              (
-                  onPressed: ()
-                  {
-                   Navigator.of(context).pop(); 
-                   print(strAlphabet = strTextEditingController.text);
-                   alphabetList = strAlphabet.split('');
-                   Navigator.of(context).push
-                                         (
-                                           MaterialPageRoute
-                                            (
-                                              builder: (context)=> GridViewPage1
-                                                                  (
-                                                                    gridRow:widget.rowC,
-                                                                    gridCol:widget.colC,
-                                                                    gridAlphabetList:alphabetList,
-                                                                  )
-                                            ),
-                                         );
-                   
-                   print(alphabetList);//printing list of values on console
-                   setState(() 
-                   {
-                    strTextEditingController.text = '';
-                   });
-                   
-                  }, 
-               child: Container
-               (
-                decoration: BoxDecoration
-                (
-                  borderRadius: BorderRadius.circular(15.0),
-                  color:Colors.orange
+              Container(
+                width: 100,
+                height: 50,
+                child: ElevatedButton
+                   (
+                    onPressed: ()
+                    {
+                     setState(() 
+                     {
+                       strTextEditingController.text.isEmpty ? _validate = true : _validate = false;
+                     });
+                      
+                     Navigator.of(context).pop(); 
+                     print(strAlphabet = strTextEditingController.text);
+                     alphabetList = strAlphabet.split('');
+                     Navigator.of(context).push
+                                           (
+                                             MaterialPageRoute
+                                              (
+                                                builder: (context)=> GridViewPage1
+                                                                    (
+                                                                      gridRow:widget.rowC,
+                                                                      gridCol:widget.colC,
+                                                                      gridAlphabetList:alphabetList,
+                                                                    )
+                                              ),
+                                           );
+                     
+                     print(alphabetList);//printing list of values on console
+                    
+                    }, 
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0,bottom: 16.0),
+                    child: Text
+                    (
+                      "Submit",
+                      style:TextStyle
+                      (
+                        color: Colors.white,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      )
+                     
+                    ),
+                  ),
+                  style: ButtonStyle
+                      (
+                        backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
+                        shape: MaterialStateProperty.all
+                        (
+                          RoundedRectangleBorder
+                          (
+                            borderRadius: BorderRadius.circular(10)
+                          ))
+                      ),
+                  
+                 
                 ),
-                padding: EdgeInsets.all(20),
-                child: Text("Submit")
-               ),
               ), 
                     ],
               ),

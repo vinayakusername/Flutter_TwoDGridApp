@@ -16,7 +16,16 @@ class _RowColFormPageState extends State<RowColFormPage>
   TextEditingController rowTextEditingController = TextEditingController();
   TextEditingController columnTextEditingController = TextEditingController();
 
-  int rowC=0,colC=0; 
+  int rowC=1,colC=1;
+  bool _validate = false;
+
+  @override
+  void dispose() 
+  {
+    rowTextEditingController.dispose();
+    columnTextEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) 
@@ -62,12 +71,52 @@ class _RowColFormPageState extends State<RowColFormPage>
                        padding: const EdgeInsets.all(12.0),
                        child: TextField
                        (
+                         controller: rowTextEditingController,
+                         
                          decoration: InputDecoration
                         (
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter number of rows'
+                          labelStyle:TextStyle(color: Colors.orange),
+                          labelText: 'Grid view row',
+                          hintText: 'Enter number of rows',
+                          hintStyle: TextStyle(color: Colors.blueGrey),
+                          errorText: _validate ? 'Value Can\'t Be Empty' : null,
+                          focusedBorder:OutlineInputBorder
+                          (
+                           borderRadius: BorderRadius.circular(8.0),
+                           borderSide: BorderSide
+                          (
+                            color: Colors.amberAccent,
+                            width: 2
+                          ),
+                          ),
+                          enabledBorder: OutlineInputBorder
+                          (
+                             borderRadius: BorderRadius.circular(8.0),
+                             borderSide: BorderSide
+                             (
+                              color: Colors.blueGrey
+                             )
+                          ),
+                           errorBorder: OutlineInputBorder
+                                        (
+                                         borderRadius: BorderRadius.circular(8.0),
+                                         borderSide: BorderSide
+                                         (
+                                          color: Colors.redAccent,
+                                          width: 2
+                                         )
+                                        ),
+                                       focusedErrorBorder: OutlineInputBorder
+                                       (
+                                         borderRadius: BorderRadius.circular(8.0),
+                                         borderSide: BorderSide
+                                        (
+                                            color:Colors.redAccent,
+                                            width: 2
+                                        )
+                                       )
                         ),
-                      controller: rowTextEditingController,
+                     
                        ),
                       ),
                       SizedBox(height: 20,),
@@ -86,12 +135,50 @@ class _RowColFormPageState extends State<RowColFormPage>
                        padding: const EdgeInsets.all(12.0),
                        child: TextField
                        (
+                        controller: columnTextEditingController,
                         decoration: InputDecoration
                         (
-                         border: OutlineInputBorder(),
-                         hintText: 'Enter number of columns'
-                        ),   
-                        controller: columnTextEditingController,
+                          labelStyle:TextStyle(color: Colors.orange),
+                          labelText: 'Grid view column',
+                          hintText: 'Enter number of columns',
+                          hintStyle: TextStyle(color: Colors.blueGrey),
+                          errorText: _validate ? 'Value Can\'t Be Empty' : null,
+                          focusedBorder:OutlineInputBorder
+                          (
+                           borderRadius: BorderRadius.circular(8.0),
+                           borderSide: BorderSide
+                          (
+                            color: Colors.amberAccent,
+                            width: 2
+                          ),
+                          ),
+                          enabledBorder: OutlineInputBorder
+                          (
+                             borderRadius: BorderRadius.circular(8.0),
+                             borderSide: BorderSide
+                             (
+                              color: Colors.blueGrey
+                             )
+                          ),
+                           errorBorder: OutlineInputBorder
+                           (
+                             borderRadius: BorderRadius.circular(8.0),
+                             borderSide: BorderSide
+                                      (
+                                          color: Colors.redAccent,
+                                          width: 2
+                                        )
+                                      ),
+                           focusedErrorBorder: OutlineInputBorder
+                             (
+                               borderRadius: BorderRadius.circular(8.0),
+                               borderSide: BorderSide
+                              (
+                               color:Colors.redAccent,
+                               width: 2
+                             )
+                             )
+                        ),
                        ),
                       ),
            
@@ -101,71 +188,92 @@ class _RowColFormPageState extends State<RowColFormPage>
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: 
                      [
-                        FlatButton
-                    (
-                      onPressed: ()
-                     {
-                       rowC = int.parse(rowTextEditingController.text);
-                       colC = int.parse(columnTextEditingController.text);
-                       Navigator.of(context).pop(); 
-                       Navigator.of(context).push
-                                            (
-                                              MaterialPageRoute
-                                              (
-                                                builder: (context)=>AlphabetFormPage(rowC:rowC,colC:colC)
-                                              )
-                                            );
-                       setState(() 
-                       {
-      
-                       });
-                       //Navigator.of(context).pop();
-                     }, 
-                     child: Container
-                     (
-                      decoration: BoxDecoration
-                     (
-                       borderRadius: BorderRadius.circular(15.0),
-                       color:Colors.orange
-                     ),
-                     padding: EdgeInsets.all(20),
-                     child: Text
-                     (
-                       "Submit",
-                       style:TextStyle
-                       (
-                         color: Colors.white
+                       Container(
+                         width: 100,
+                         height: 50,
+                         child: ElevatedButton
+                         (
+                           onPressed: ()
+                           {
+                            setState(() 
+                            {
+                            rowTextEditingController.text.isEmpty ? _validate = true : _validate = false;
+                            columnTextEditingController.text.isEmpty?_validate =true: _validate = false;
+                            });
+                             rowC = int.parse(rowTextEditingController.text);
+                             colC = int.parse(columnTextEditingController.text);
+                             Navigator.of(context).pop(); 
+                             Navigator.of(context).push
+                                                  (
+                                                   MaterialPageRoute
+                                                  (
+                                                     builder: (context)=>AlphabetFormPage(rowC:rowC,colC:colC)
+                                                  )
+                                                  ); 
+                           
+                           }, 
+                           child:Text
+                                  (
+                                     "Submit",
+                                     style:TextStyle
+                                    (
+                                      color: Colors.white,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                          style: ButtonStyle
+                                 (
+                                  backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
+                                  shape: MaterialStateProperty.all
+                                  (
+                                    RoundedRectangleBorder
+                                   (
+                                     borderRadius: BorderRadius.circular(10)
+                                   )
+                                  ),
+                                 ), 
+                           
+                          ),
                        ),
-                     )
-                     ),
-                   ),
+                      
                    SizedBox(width: 20,),
-                    FlatButton
-                    (
-                      onPressed: ()
-                     {
-                       rowTextEditingController.text='';
-                       columnTextEditingController.text='';
-                        //Navigator.of(context).pop();
-                     }, 
-                     child: Container
-                     (
-                      decoration: BoxDecoration
-                     (
-                       borderRadius: BorderRadius.circular(15.0),
-                       color:Colors.orange
-                     ),
-                     padding: EdgeInsets.all(20),
-                     child: Text
-                     (
-                       "Reset",
-                       style:TextStyle
+                    Container(
+                      width: 100,
+                      height: 50,
+                      child: ElevatedButton
+                      (
+                        onPressed: ()
+                       {
+                         rowTextEditingController.text='';
+                         columnTextEditingController.text='';
+                          //Navigator.of(context).pop();
+                       }, 
+                       
+                       child: Text
                        (
-                         color: Colors.white
-                       )
-                     ),
-                     ),
-                   ),  
+                         "Reset",
+                         style:TextStyle
+                         (
+                           color: Colors.white,
+                           fontSize: 15.0,
+                           fontWeight: FontWeight.bold,
+                         )
+                       ),
+                        style: ButtonStyle
+                                 (
+                                  backgroundColor: MaterialStateProperty.all(Colors.orangeAccent),
+                                  shape: MaterialStateProperty.all
+                                  (
+                                    RoundedRectangleBorder
+                                   (
+                                     borderRadius: BorderRadius.circular(10)
+                                   )
+                                  ),
+                                 ), 
+                       ),
+                    ),
+                     
                     ],
                    ), 
                   ],

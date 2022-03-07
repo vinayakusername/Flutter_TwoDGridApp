@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:two_d_grid_app/app_widgets/row_column_form_widget.dart';
+import 'package:two_d_grid_app/app_widgets/search_alphabet_widget.dart';
 
 
 class GridViewPage1 extends StatefulWidget 
@@ -14,10 +15,12 @@ class GridViewPage1 extends StatefulWidget
 
 class _GridViewPage1State extends State<GridViewPage1> 
 {
+  double padding = 5;
   @override
   Widget build(BuildContext context) 
   {
-     return Scaffold
+    Size size = MediaQuery.of(context).size;
+    return Scaffold
     (
       appBar: AppBar
       (
@@ -40,25 +43,42 @@ class _GridViewPage1State extends State<GridViewPage1>
             (
               onPressed:()
               {
-                //functionality to search an item
+                 /*
+              showSearch() is method provided by flutter which creates predefine textfield.
+              Just we need to pass context and search delegate which is dataSearch in our case.
+               */
+              showSearch
+              (
+                context: context, 
+                delegate: DataSearch(gridRow: widget.gridRow,gridCol: widget.gridCol,gridAlphabetList:widget.gridAlphabetList)
+              );
               }, 
               icon:Icon(Icons.search)
             ),
-          )
+          ),
+           Padding
+          (
+            padding: EdgeInsets.all(8.0),
+            child:IconButton
+            (
+              onPressed: ()
+              {
+                 Navigator.pushReplacement
+                    (
+                      context, 
+                      MaterialPageRoute
+                      (
+                        builder:(context)=>RowColFormPage()
+                      )
+                    );
+              },
+              icon: Icon(Icons.clear),
+            )
+          ),
         ],
       ),
       body: _buildGridView(),
-      floatingActionButton: FloatingActionButton
-         (
-           onPressed:()=>Navigator.of(context).push
-                                               (
-                                                 MaterialPageRoute
-                                                 (
-                                                   builder:(context)=>RowColFormPage()
-                                                 ),
-                                               ),
-           child: Icon(Icons.add),
-         ),  
+     
     );
   }
 
@@ -69,7 +89,10 @@ class _GridViewPage1State extends State<GridViewPage1>
           (
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,  
-              padding: EdgeInsets.all(12.0),  
+              color: Colors.redAccent,
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(5.0), 
+              margin: EdgeInsets.all(5.0), 
               child: GridView.builder
               (  
                 itemCount:widget.gridCol * widget.gridRow,
@@ -77,13 +100,15 @@ class _GridViewPage1State extends State<GridViewPage1>
                 (  
                     
                     crossAxisCount: widget.gridCol,
-                    childAspectRatio:3/2, 
-                    crossAxisSpacing: 20.0,  
-                    mainAxisSpacing: 20.0  
+                    childAspectRatio:1, 
+                    crossAxisSpacing: padding,  
+                    mainAxisSpacing: padding  
                 ),  
                
                 itemBuilder: (context, index) => Container
                 (
+                  width: 300,
+                  height: 300,
                   decoration: BoxDecoration
                   (
                     color: Colors.orange,
